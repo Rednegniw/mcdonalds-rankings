@@ -1,5 +1,4 @@
 name = "mcdonalds-rankings"
-pages_build_output_dir = "./dist"
 
 main = "./.cloudflare/worker.js"
 site.bucket = "./.cloudflare/public"
