@@ -37,6 +37,7 @@
 	"type": "module",
 	"dependencies": {
 		"@ernane/svelte-star-rating": "^1.1.9",
+		"@sveltejs/adapter-cloudflare": "^4.7.2",
 		"@sveltejs/enhanced-img": "^0.3.3",
 		"bits-ui": "^0.21.13",
 		"clsx": "^2.1.1",
