@@ -1,10 +1,10 @@
 name = "mcdonalds-rankings"
-account_id = "2185cca7a4ef692dd36e041f172a18ef"
+pages_build_output_dir = "./dist"
 
 main = "./.cloudflare/worker.js"
 site.bucket = "./.cloudflare/public"
 
-build.command = "bun run build"
+build.command = "bun build"
 
 compatibility_date = "2021-11-12"
 workers_dev = true
