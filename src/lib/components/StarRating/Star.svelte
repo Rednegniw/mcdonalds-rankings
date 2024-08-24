@@ -4,7 +4,7 @@
 	export { className as class };
 
 	let yellow = '#fbbd05';
-	let gray = '#d1d5db'
+	let gray = '#d1d5db';
 </script>
 
 <div>

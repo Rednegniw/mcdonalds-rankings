@@ -1,4 +1,10 @@
-type PlacesSearchStatus = 'OK' | 'ZERO_RESULTS' | 'OVER_QUERY_LIMIT' | 'REQUEST_DENIED' | 'INVALID_REQUEST' | 'UNKNOWN_ERROR';
+type PlacesSearchStatus =
+	| 'OK'
+	| 'ZERO_RESULTS'
+	| 'OVER_QUERY_LIMIT'
+	| 'REQUEST_DENIED'
+	| 'INVALID_REQUEST'
+	| 'UNKNOWN_ERROR';
 
 export interface PlaceDetailsResponse {
 	html_attributions: string[];

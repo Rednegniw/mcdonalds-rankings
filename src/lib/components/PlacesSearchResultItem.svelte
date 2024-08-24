@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { PlacesAutocompletePrediction } from "$lib/types";
+	import type { PlacesAutocompletePrediction } from '$lib/types';
 
 	export let place: PlacesAutocompletePrediction;
 

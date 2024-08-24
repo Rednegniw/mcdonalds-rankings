@@ -6,7 +6,7 @@ const config = {
 	preprocess: vitePreprocess(),
 	kit: {
 		adapter: adapter({
-			config: 'wrangler.toml',
+			config: 'wrangler.toml'
 		}),
 		alias: {
 			$lib: 'src/lib'

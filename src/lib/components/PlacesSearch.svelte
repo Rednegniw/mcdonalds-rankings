@@ -8,11 +8,12 @@
 	import { v4 as uuidv4 } from 'uuid';
 	import { createEventDispatcher } from 'svelte';
 	import { cn } from '$lib/utils';
+	import type { PlacesAutocompletePrediction } from '$lib/types';
 
 	let open = false;
 	let value = '';
 	let sessionToken: string = uuidv4();
-	let suggestions: google.maps.places.AutocompleteResponse['predictions'] = [];
+	let suggestions: PlacesAutocompletePrediction[] = [];
 	const dispatch = createEventDispatcher();
 
 	$: console.log('sessionToken', sessionToken);
@@ -29,7 +30,13 @@
 		suggestions = await response.json();
 	};
 
-	$: value.length ? dispatch('resultsOpen') : dispatch('blur');
+	$: {
+		if (value.length) {
+			dispatch('resultsOpen');
+		} else {
+			dispatch('blur');
+		}
+	}
 
 	const onInput = () => {
 		if (value.length > 2) {

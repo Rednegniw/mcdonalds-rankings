@@ -1,2 +1,4 @@
 bun i
+bun format
+bun lint
 git add .

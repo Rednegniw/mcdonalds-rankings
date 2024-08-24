@@ -5,7 +5,6 @@
 	import Checkbox from '$lib/components/ui/checkbox/checkbox.svelte';
 	import Input from '$lib/components/ui/input/input.svelte';
 	import Separator from '$lib/components/ui/separator/separator.svelte';
-	import { position } from '../../stores';
 
 	export let data;
 	let places = data.places;

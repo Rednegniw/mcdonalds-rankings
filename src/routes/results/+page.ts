@@ -6,13 +6,13 @@ export const load = async ({ url: { searchParams }, fetch }) => {
 	let lat = searchParams.get('lat');
 	let lng = searchParams.get('lng');
 	const sessionToken = searchParams.get('sessionToken');
-	const radius = searchParams.get('radius') ?? DEFAULT_RADIUS
+	const radius = searchParams.get('radius') ?? DEFAULT_RADIUS;
 	const openNow = searchParams.get('openNow') === 'true';
 
 	/*
 		If no place_id OR lat and lng are provided, we throw an error.
 	*/
-	if (!place_id && (!lat && !lng)) {
+	if (!place_id && !lat && !lng) {
 		throw new Error('No place_id or lat and lng provided');
 	}
 
@@ -26,14 +26,13 @@ export const load = async ({ url: { searchParams }, fetch }) => {
 		if (!placeDetailsResponse.ok) {
 			throw new Error('Failed to fetch from Google Places API');
 		}
-	
+
 		const placeDetailsResult: PlaceDetailsResponse['result'] = await placeDetailsResponse.json();
 
-	
 		if (!placeDetailsResult?.geometry) {
 			throw new Error('No geometry found in place details');
 		}
-	
+
 		/* 
 			Here we get the information about the place from the place details response.
 		*/
@@ -53,6 +52,6 @@ export const load = async ({ url: { searchParams }, fetch }) => {
 		lat,
 		lng,
 		radius,
-		openNow,
+		openNow
 	};
 };

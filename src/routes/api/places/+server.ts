@@ -9,7 +9,7 @@ export const GET: RequestHandler = async ({ url }) => {
 	const openNow = url.searchParams.get('openNow');
 
 	const type = 'restaurant';
-	const keyword = 'McDonald\'s';
+	const keyword = "McDonald's";
 
 	if (!lat || !lng) {
 		return json({ error: 'Latitude and Longitude are required' }, { status: 400 });
@@ -26,9 +26,9 @@ export const GET: RequestHandler = async ({ url }) => {
 
 	console.log('data', data);
 
-    // Only return places that contain the keyword
-    const filteredResults = data.results
-		.filter(place => place.name?.includes(keyword))
+	// Only return places that contain the keyword
+	const filteredResults = data.results
+		.filter((place) => place.name?.includes(keyword))
 		.sort((a, b) => {
 			if (a.rating && b.rating) {
 				return b.rating - a.rating;

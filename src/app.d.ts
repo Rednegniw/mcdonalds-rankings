@@ -9,7 +9,7 @@ declare global {
 		interface Platform {
 			env: {
 				GOOGLE_PLACES_API_KEY: DurableObjectNamespace;
-			}
+			};
 			caches: CacheStorage & { default: Cache };
 		}
 	}

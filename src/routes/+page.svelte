@@ -19,7 +19,7 @@
 				Find the best ranked McDonalds near you.
 			</h1>
 		</div>
-	
+
 		<PlacesSearch on:resultsOpen={onResultsOpen} on:blur={onBlur} />
 	</div>
 </main>

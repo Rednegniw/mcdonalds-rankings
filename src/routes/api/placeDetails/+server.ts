@@ -1,6 +1,6 @@
-import { type RequestHandler, json } from "@sveltejs/kit";
-import { GOOGLE_PLACES_API_KEY as apiKey } from "$env/static/private";
-import type { PlaceDetailsResponse } from "$lib/types";
+import { type RequestHandler, json } from '@sveltejs/kit';
+import { GOOGLE_PLACES_API_KEY as apiKey } from '$env/static/private';
+import type { PlaceDetailsResponse } from '$lib/types';
 
 export const GET: RequestHandler = async ({ url, fetch }) => {
 	const placeId = url.searchParams.get('placeId');
