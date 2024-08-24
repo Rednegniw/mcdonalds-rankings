@@ -11,8 +11,6 @@
 		4: rating > 3 && rating <= 4 ? (rating - 3 * 100) : 0,
 		5: rating > 4 ? (rating - 4 * 100) : 0
 	};
-
-	$: console.log('starPercentages', starPercentages);
 </script>
 
 <div class="flex items-center gap-2">

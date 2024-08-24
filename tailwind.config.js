@@ -14,6 +14,17 @@ const config = {
 			}
 		},
 		extend: {
+			screens: {
+                desktopLg: { max: '2560px' },
+                desktop: { max: '1920px' },
+                laptop: { max: '1440px' },
+                laptopSm: { max: '1280px' },
+                tabletLs: { max: '1024px' },
+                tablet: { max: '768px' },
+                phoneLs: { max: '600px' },
+                phone: { max: '480px' },
+                phoneSm: { max: '320px' }
+            },
 			colors: {
 				border: "hsl(var(--border) / <alpha-value>)",
 				input: "hsl(var(--input) / <alpha-value>)",

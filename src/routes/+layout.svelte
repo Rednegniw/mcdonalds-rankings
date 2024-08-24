@@ -1,7 +1,6 @@
 <script>
+	import { cn } from '$lib/utils';
 	import '../app.css';
 </script>
 
-<main class="flex flex-col items-center w-full">
-	<slot />
-</main>
+<slot />

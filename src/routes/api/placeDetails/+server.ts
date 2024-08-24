@@ -4,8 +4,11 @@ import type { PlaceDetailsResponse } from "$lib/types";
 
 export const GET: RequestHandler = async ({ url, fetch }) => {
 	const placeId = url.searchParams.get('placeId');
+	const sessionToken = url.searchParams.get('sessionToken');
 
-	const apiUrl = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&key=${apiKey}`;
+	console.log('PLACE_DETAILS sessionToken', sessionToken);
+
+	const apiUrl = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&key=${apiKey}&sessiontoken=${sessionToken}`;
 
 	const response = await fetch(apiUrl);
 	if (!response.ok) {

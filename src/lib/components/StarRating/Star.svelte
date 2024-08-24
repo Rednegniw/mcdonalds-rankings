@@ -3,8 +3,6 @@
 	let className: string | undefined = undefined;
 	export { className as class };
 
-	$: console.log('percentage', percentage);
-
 	let yellow = '#fbbd05';
 	let gray = '#d1d5db'
 </script>

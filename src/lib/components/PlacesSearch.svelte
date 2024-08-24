@@ -3,33 +3,33 @@
 	import { Search } from 'lucide-svelte';
 	import CurrentLocation from '$lib/components/CurrentLocation.svelte';
 	import { Input } from '$lib/components/ui/input';
-	import type { PlaceDetailsResponse } from '$lib/types';
-	import { position } from '../../stores';
+	import { goto } from '$app/navigation';
+	import PlacesSearchResultItem from './PlacesSearchResultItem.svelte';
+	import { v4 as uuidv4 } from 'uuid';
+	import { createEventDispatcher } from 'svelte';
+	import { cn } from '$lib/utils';
 
 	let open = false;
 	let value = '';
+	let sessionToken: string = uuidv4();
 	let suggestions: google.maps.places.AutocompleteResponse['predictions'] = [];
+	const dispatch = createEventDispatcher();
+
+	$: console.log('sessionToken', sessionToken);
 
 	const autocomplete = async (query: string) => {
-		const response = await fetch('/api/autocomplete?query=' + query);
+		const response = await fetch(
+			'/api/autocomplete?query=' + query + '&sessionToken=' + sessionToken
+		);
 
 		if (!response.ok) {
 			throw new Error('Failed to fetch from Google Places API');
 		}
 
 		suggestions = await response.json();
-	}
+	};
 
-	const placeDetails = async (placeId: string): Promise<PlaceDetailsResponse['result']> => {
-		console.log('placeId', placeId);
-		const response = await fetch('/api/placeDetails?placeId=' + placeId);
-
-		if (!response.ok) {
-			throw new Error('Failed to fetch from Google Places API');
-		}
-
-		return response.json();
-	}
+	$: value.length ? dispatch('resultsOpen') : dispatch('blur');
 
 	const onInput = () => {
 		if (value.length > 2) {
@@ -42,42 +42,40 @@
 	};
 
 	const onFocus = () => {
-		if (value.length > 2) open = true;
+		if (value.length > 2) {
+			open = true;
+		}
 	};
 
 	const onPlaceSelected = async (id: string) => {
+		goto(`/results?place_id=${id}&sessionToken=${sessionToken}`);
 		open = false;
-		const result = await placeDetails(id);
-		if (result.geometry) {
-			position.set(result.geometry.location);
-		}
 	};
 </script>
 
-<Popover.Root bind:open openFocus={false} disableFocusTrap>
+<Popover.Root bind:open openFocus={false} disableFocusTrap closeOnOutsideClick>
 	<Input
 		bind:value
 		on:focus={onFocus}
 		on:input={onInput}
-		placeholder="Where would you like to search?"
-		wrapperClass="w-full border border-gray-200 shadow-md px-4"
-		class="text-xl rounded-xl"
+		placeholder="Find the best McDonalds in your area"
+		wrapperClass={cn(
+			'w-full border border-gray-300 shadow-md px-4 py-5 rounded-lg',
+			'phone:px-3 phone:py-4'
+		)}
+		class={cn('text-xl', 'phone:text-base')}
 		autocomplete="off"
 	>
-		<Search slot="leftContent" class="size-6" />
+		<Search slot="leftContent" class={cn('size-6', 'phone:size-5')} />
 		<CurrentLocation slot="rightContent" />
 	</Input>
-	<Popover.Trigger class="relative w-full -top-4" />
-	<Popover.Content sameWidth class="overflow-y-auto max-h-80">
+	<Popover.Trigger class="relative w-full -top-9" />
+	<Popover.Content sameWidth class="p-0 overflow-y-auto">
 		{#each suggestions as suggestion}
-			<div
+			<PlacesSearchResultItem
+				place={suggestion}
 				on:click={() => onPlaceSelected(suggestion.place_id)}
-				class="flex items-center gap-3 p-4 border-b border-gray-200 hover:bg-gray-100"
-			>
-				<div class="flex flex-col flex-1 min-w-0">
-					<span class="text-sm font-medium text-gray-900">{suggestion.description}</span>
-				</div>
-			</div>
+			/>
 		{/each}
 	</Popover.Content>
 </Popover.Root>

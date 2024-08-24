@@ -1,37 +1,29 @@
 <script lang="ts">
-	import PlacesList from "$lib/components/PlacesList.svelte";
-	import PlacesSearch from "$lib/components/PlacesSearch.svelte";
-	import { position } from '../stores'
-	import type { Place } from "$lib/types";
-	
-	let places: Place[] = [];
+	import PlacesSearch from '$lib/components/PlacesSearch.svelte';
+	import mcDonaldsIcon from '$lib/assets/mcdonalds_icon.svg';
+	import { cn } from '$lib/utils';
 
-	$: $position, getPlaces();
-	$: console.log('places', places);
+	let searchFocused = false;
 
-	async function getPlaces() {
-		if ($position === null) {
-			return;
-		}
-
-		const response = await fetch('/api/places?lat=' + $position.lat + '&lng=' + $position.lng);
-		if (!response.ok) {
-			throw new Error('Failed to fetch from Google Places API');
-		}
-
-		places = await response.json();
-	}
+	const onResultsOpen = () => (searchFocused = true);
+	const onBlur = () => (searchFocused = false);
 </script>
 
-<div>
-	<h1 class="text-4xl font-bold">Find the best McDonalds in your area</h1>
-	<PlacesSearch />
-		
-	{#if $position}
-		Current position: {$position.lat}, {$position.lng}
-	{/if}
+<main
+	class={cn('flex flex-col items-center h-screen max-w-3xl mx-auto text-center', 'tablet:px-4')}
+>
+	<div class={cn('flex flex-col items-center w-full gap-10 mt-24', searchFocused && 'tablet:mt-8')}>
+		<div class={cn('flex flex-col items-center gap-10', searchFocused && 'tablet:hidden')}>
+			<img src={mcDonaldsIcon} alt="McDonalds" class="size-24" />
+			<h1 class={cn('text-4xl font-bold', 'phone:text-3xl')}>
+				Find the best ranked McDonalds near you.
+			</h1>
+		</div>
 	
-	{#if places.length}
-		<PlacesList bind:places />
-	{/if}
-</div>
+		<PlacesSearch on:resultsOpen={onResultsOpen} on:blur={onBlur} />
+	</div>
+</main>
+
+<svelte:head>
+	<title>Find the best McDonalds in your area</title>
+</svelte:head>

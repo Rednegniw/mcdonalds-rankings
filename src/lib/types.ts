@@ -113,3 +113,5 @@ export interface Place {
 	website?: string;
 	wheelchair_accessible_entrance?: boolean;
 }
+
+export type PlacesAutocompletePrediction = google.maps.places.AutocompletePrediction;

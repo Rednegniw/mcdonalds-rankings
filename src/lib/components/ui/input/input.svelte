@@ -16,12 +16,12 @@
 	export let readonly: $$Props['readonly'] = undefined;
 </script>
 
-<div class={cn('border-input flex items-center gap-3 w-full rounded-md border py-4', wrapperClass)}>
+<div class={cn('border-input flex items-center gap-4 w-full rounded-lg border p-3', wrapperClass)}>
 	<slot name="leftContent" />
 	<input
 		class={cn(
-			'placeholder:text-muted-foreground flex-grow h-full border-none min-h-6 ring-0',
-			'focus:border-none',
+			'placeholder:text-muted-foreground flex-grow h-full border-none ring-0',
+			'focus-visible:outline-none',
 			className
 		)}
 		bind:value
