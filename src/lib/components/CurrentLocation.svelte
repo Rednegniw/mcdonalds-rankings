@@ -1,18 +1,20 @@
 <script lang="ts">
 	import { cn } from '$lib/utils';
 	import { LocateFixed } from 'lucide-svelte';
-	import { position } from '../../stores';
+	import { position, query } from '../stores';
 	import * as Tooltip from '$lib/components/ui/tooltip';
-	import { goto } from '$app/navigation';
 
 	let loading = false;
+	export let onLocationSuccess: (pos: GeolocationPosition) => void;
 
 	const onSuccess = (pos: GeolocationPosition) => {
 		position.set({
 			lat: pos.coords.latitude,
 			lng: pos.coords.longitude
 		});
-		goto(`/results?lat=${pos.coords.latitude}&lng=${pos.coords.longitude}`);
+		query.set(pos.coords.latitude.toString() + ',' + pos.coords.longitude.toString());
+		onLocationSuccess(pos);
+		loading = false;
 	};
 
 	const onError = (error: GeolocationPositionError) => {

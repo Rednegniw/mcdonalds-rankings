@@ -5,13 +5,16 @@
 	import Checkbox from '$lib/components/ui/checkbox/checkbox.svelte';
 	import Input from '$lib/components/ui/input/input.svelte';
 	import Separator from '$lib/components/ui/separator/separator.svelte';
+	import emptyResults from '$lib/assets/empty_results.svg';
+	import PlacesSearch from '$lib/components/PlacesSearch.svelte';
 
 	export let data;
-	let places = data.places;
 	export let radius = data.radius;
-	let openNow = data.openNow;
 
-	let onFilter = async (e) => {
+	$: places = data.places;
+	$: openNow = data.openNow;
+
+	const onFilter = async (e) => {
 		e.preventDefault();
 
 		const url = new URL(window.location.href);
@@ -19,11 +22,33 @@
 		url.searchParams.set('radius', radius);
 		url.searchParams.set('openNow', openNow);
 
-		goto(url.toString());
+		goto(url.toString(), { replaceState: true });
+	};
+
+	const onPlaceSelected = async (placeId: string, _, sessionToken: string) => {
+		const url = new URL(window.location.href);
+
+		url.searchParams.set('place_id', placeId);
+		url.searchParams.set('sessionToken', sessionToken);
+
+		goto(url.toString(), { replaceState: true });
+	};
+
+	const onLocationSuccess = (pos: GeolocationPosition) => {
+		const url = new URL(window.location.href);
+
+		url.searchParams.set('lat', pos.coords.latitude.toString());
+		url.searchParams.set('lng', pos.coords.longitude.toString());
+
+		goto(url.toString(), { replaceState: true });
 	};
 </script>
 
 <main class="container max-w-6xl py-8 mx-auto space-y-10">
+	<div>
+		<PlacesSearch {onPlaceSelected} {onLocationSuccess} />
+	</div>
+
 	<div class="space-y-1">
 		<h1 class="text-2xl font-medium">Best McDonalds in the area</h1>
 		<span class="text-sm text-gray-500">Latitude: {data.lat}, Longitude: {data.lng}</span>
@@ -48,8 +73,15 @@
 			<Button on:click={onFilter} class="w-full mt-4">Filter</Button>
 		</div>
 		<Separator orientation="vertical" class="mx-4 mr-0" />
-		<div class="basis-2/3">
-			<PlacesList bind:places />
+		<div class=" basis-2/3">
+			{#if places.length}
+				<PlacesList {places} />
+			{:else}
+				<div class="space-y-10 text-center">
+					<h1 class="text-2xl font-medium">No results found. Try a different radius?</h1>
+					<img src={emptyResults} alt="No results found" class="mx-auto" />
+				</div>
+			{/if}
 		</div>
 	</section>
 

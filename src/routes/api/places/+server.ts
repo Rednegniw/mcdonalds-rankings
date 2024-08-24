@@ -24,8 +24,6 @@ export const GET: RequestHandler = async ({ url }) => {
 
 	const data: PlacesNearbySearchResponse = await response.json();
 
-	console.log('data', data);
-
 	// Only return places that contain the keyword
 	const filteredResults = data.results
 		.filter((place) => place.name?.includes(keyword))

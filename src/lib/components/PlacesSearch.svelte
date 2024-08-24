@@ -3,20 +3,19 @@
 	import { Search } from 'lucide-svelte';
 	import CurrentLocation from '$lib/components/CurrentLocation.svelte';
 	import { Input } from '$lib/components/ui/input';
-	import { goto } from '$app/navigation';
 	import PlacesSearchResultItem from './PlacesSearchResultItem.svelte';
-	import { v4 as uuidv4 } from 'uuid';
 	import { createEventDispatcher } from 'svelte';
 	import { cn } from '$lib/utils';
 	import type { PlacesAutocompletePrediction } from '$lib/types';
+	import { query } from '$lib/stores';
+	import { v4 as uuidv4 } from 'uuid';
 
 	let open = false;
-	let value = '';
-	let sessionToken: string = uuidv4();
 	let suggestions: PlacesAutocompletePrediction[] = [];
+	let sessionToken: string = uuidv4();
+	export let onLocationSuccess: (pos: GeolocationPosition) => void;
+	export let onPlaceSelected: (placeId: string, name: string, sessionToken?: string) => void;
 	const dispatch = createEventDispatcher();
-
-	$: console.log('sessionToken', sessionToken);
 
 	const autocomplete = async (query: string) => {
 		const response = await fetch(
@@ -31,7 +30,7 @@
 	};
 
 	$: {
-		if (value.length) {
+		if ($query.length) {
 			dispatch('resultsOpen');
 		} else {
 			dispatch('blur');
@@ -39,9 +38,9 @@
 	}
 
 	const onInput = () => {
-		if (value.length > 2) {
+		if ($query.length > 2) {
 			open = true;
-			autocomplete(value);
+			autocomplete($query);
 		} else {
 			open = false;
 			suggestions = [];
@@ -49,20 +48,15 @@
 	};
 
 	const onFocus = () => {
-		if (value.length > 2) {
+		if ($query.length > 2) {
 			open = true;
 		}
-	};
-
-	const onPlaceSelected = async (id: string) => {
-		goto(`/results?place_id=${id}&sessionToken=${sessionToken}`);
-		open = false;
 	};
 </script>
 
 <Popover.Root bind:open openFocus={false} disableFocusTrap closeOnOutsideClick>
 	<Input
-		bind:value
+		bind:value={$query}
 		on:focus={onFocus}
 		on:input={onInput}
 		placeholder="Find the best McDonalds in your area"
@@ -74,14 +68,18 @@
 		autocomplete="off"
 	>
 		<Search slot="leftContent" class={cn('size-6', 'phone:size-5')} />
-		<CurrentLocation slot="rightContent" />
+		<CurrentLocation {onLocationSuccess} slot="rightContent" />
 	</Input>
 	<Popover.Trigger class="relative w-full -top-9" />
 	<Popover.Content sameWidth class="p-0 overflow-y-auto">
 		{#each suggestions as suggestion}
 			<PlacesSearchResultItem
 				place={suggestion}
-				on:click={() => onPlaceSelected(suggestion.place_id)}
+				on:click={() => {
+					query.set(suggestion.description);
+					open = false;
+					onPlaceSelected(suggestion.place_id, suggestion.name, sessionToken);
+				}}
 			/>
 		{/each}
 	</Popover.Content>

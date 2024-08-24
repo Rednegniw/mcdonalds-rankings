@@ -2,11 +2,20 @@
 	import PlacesSearch from '$lib/components/PlacesSearch.svelte';
 	import mcDonaldsIcon from '$lib/assets/mcdonalds_icon.svg';
 	import { cn } from '$lib/utils';
+	import { goto } from '$app/navigation';
 
 	let searchFocused = false;
 
 	const onResultsOpen = () => (searchFocused = true);
 	const onBlur = () => (searchFocused = false);
+
+	const onPlaceSelected = async (placeId: string, _, sessionToken: string) => {
+		goto(`/results?place_id=${placeId}&sessionToken=${sessionToken}`);
+	};
+
+	const onLocationSuccess = (pos: GeolocationPosition) => {
+		goto(`/results?lat=${pos.coords.latitude}&lng=${pos.coords.longitude}`);
+	};
 </script>
 
 <main
@@ -20,7 +29,12 @@
 			</h1>
 		</div>
 
-		<PlacesSearch on:resultsOpen={onResultsOpen} on:blur={onBlur} />
+		<PlacesSearch
+			{onPlaceSelected}
+			{onLocationSuccess}
+			on:resultsOpen={onResultsOpen}
+			on:blur={onBlur}
+		/>
 	</div>
 </main>
 
