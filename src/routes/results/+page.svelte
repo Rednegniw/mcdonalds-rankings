@@ -7,6 +7,7 @@
 	import { cn } from '$lib/utils.js';
 	import PlacesFilterMenu from '$lib/components/PlacesFilterMenu.svelte';
 	import PlacesMobileFilterDropdown from '$lib/components/PlacesMobileFilterDropdown.svelte';
+	import { query } from '$lib/stores/index.js';
 
 	export let data;
 	export let radius = data.radius;
@@ -88,3 +89,7 @@
 		</div>
 	</section>
 </main>
+
+<svelte:head>
+	<title>Best McDonalds near {$query}</title>
+</svelte:head>

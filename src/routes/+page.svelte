@@ -6,7 +6,9 @@
 
 	let searchFocused = false;
 
-	const onResultsOpen = () => (searchFocused = true);
+	$: console.log('NODE_ENV', process.env.NODE_ENV);
+
+	const onFocus = () => (searchFocused = true);
 	const onBlur = () => (searchFocused = false);
 
 	const onPlaceSelected = async (placeId: string, _, sessionToken: string) => {
@@ -36,7 +38,8 @@
 			<PlacesSearch
 				{onPlaceSelected}
 				{onLocationSuccess}
-				on:resultsOpen={onResultsOpen}
+				on:resultsOpen={onFocus}
+				on:focus={onFocus}
 				on:blur={onBlur}
 			/>
 		</div>

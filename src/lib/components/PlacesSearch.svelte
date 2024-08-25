@@ -51,6 +51,7 @@
 	};
 
 	const onFocus = (e) => {
+		dispatch('focus');
 		e.target.select();
 		if ($query.length > 2) {
 			open = true;
@@ -68,7 +69,7 @@
 			'w-full border border-gray-300 shadow-md px-4 py-5 rounded-lg',
 			'phone:px-3 phone:py-4'
 		)}
-		class={cn('text-xl', 'phone:text-base')}
+		class={cn('text-xl select-none', 'phone:text-base')}
 		autocomplete="off"
 	>
 		<Search slot="leftContent" class={cn('size-6', 'phone:size-5')} />
