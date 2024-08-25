@@ -11,6 +11,7 @@
 	import { v4 as uuidv4 } from 'uuid';
 
 	let open = false;
+	let loadingResults = false;
 	let suggestions: PlacesAutocompletePrediction[] = [];
 	let sessionToken: string = uuidv4();
 	export let onLocationSuccess: (pos: GeolocationPosition) => void;
@@ -18,6 +19,7 @@
 	const dispatch = createEventDispatcher();
 
 	const autocomplete = async (query: string) => {
+		loadingResults = true;
 		const response = await fetch(
 			'/api/autocomplete?query=' + query + '&sessionToken=' + sessionToken
 		);
@@ -27,6 +29,7 @@
 		}
 
 		suggestions = await response.json();
+		loadingResults = false;
 	};
 
 	$: {
@@ -72,6 +75,9 @@
 	</Input>
 	<Popover.Trigger class="relative w-full -top-9" />
 	<Popover.Content sameWidth class="p-0 overflow-y-auto">
+		{#if loadingResults && !suggestions.length}
+			<div class="flex items-center justify-center w-full h-full py-3">Loading...</div>
+		{/if}
 		{#each suggestions as suggestion}
 			<PlacesSearchResultItem
 				place={suggestion}

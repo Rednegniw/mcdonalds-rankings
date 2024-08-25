@@ -1,33 +1,41 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import PlacesList from '$lib/components/PlacesList.svelte';
-	import Button from '$lib/components/ui/button/button.svelte';
-	import Checkbox from '$lib/components/ui/checkbox/checkbox.svelte';
-	import Input from '$lib/components/ui/input/input.svelte';
 	import Separator from '$lib/components/ui/separator/separator.svelte';
 	import emptyResults from '$lib/assets/empty_results.svg';
 	import PlacesSearch from '$lib/components/PlacesSearch.svelte';
+	import { cn } from '$lib/utils.js';
+	import PlacesFilterMenu from '$lib/components/PlacesFilterMenu.svelte';
+	import PlacesMobileFilterDropdown from '$lib/components/PlacesMobileFilterDropdown.svelte';
 
 	export let data;
 	export let radius = data.radius;
+	export let openNow = data.openNow;
 
 	$: places = data.places;
-	$: openNow = data.openNow;
+	$: lat = (+data.lat).toFixed(4);
+	$: lng = (+data.lng).toFixed(4);
 
-	const onFilter = async (e) => {
-		e.preventDefault();
+	let mobilePopoverOpen = false;
 
+	const onFilter = async () => {
 		const url = new URL(window.location.href);
+
+		console.log('radius', radius);
+		console.log('openNow', openNow);
 
 		url.searchParams.set('radius', radius);
 		url.searchParams.set('openNow', openNow);
 
+		console.log('going to', url.toString());
 		goto(url.toString(), { replaceState: true });
 	};
 
 	const onPlaceSelected = async (placeId: string, _, sessionToken: string) => {
 		const url = new URL(window.location.href);
 
+		url.searchParams.delete('lat');
+		url.searchParams.delete('lng');
 		url.searchParams.set('place_id', placeId);
 		url.searchParams.set('sessionToken', sessionToken);
 
@@ -37,6 +45,7 @@
 	const onLocationSuccess = (pos: GeolocationPosition) => {
 		const url = new URL(window.location.href);
 
+		url.searchParams.delete('place_id');
 		url.searchParams.set('lat', pos.coords.latitude.toString());
 		url.searchParams.set('lng', pos.coords.longitude.toString());
 
@@ -44,52 +53,42 @@
 	};
 </script>
 
-<main class="container max-w-6xl py-8 mx-auto space-y-10">
-	<div>
-		<PlacesSearch {onPlaceSelected} {onLocationSuccess} />
-	</div>
+<main class={cn('container max-w-6xl py-8 mx-auto space-y-10', 'phone:p-4 phone:space-y-0')}>
+	<PlacesSearch {onPlaceSelected} {onLocationSuccess} />
 
-	<div class="space-y-1">
-		<h1 class="text-2xl font-medium">Best McDonalds in the area</h1>
-		<span class="text-sm text-gray-500">Latitude: {data.lat}, Longitude: {data.lng}</span>
-	</div>
-
-	<section class="flex w-full gap-10">
-		<div class="space-y-8 basis-1/3">
-			<div class="space-y-2">
-				<label for="radius" class="text-sm font-medium">Radius (in meters)</label>
-				<Input bind:value={radius} name="radius" min={0} max={10000} type="number" />
-			</div>
-			<div class="flex items-center space-x-2">
-				<Checkbox id="terms" bind:checked={openNow} aria-labelledby="terms-label" />
-				<label
-					id="terms-label"
-					for="terms"
-					class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-				>
-					Is this place open now?
-				</label>
-			</div>
-			<Button on:click={onFilter} class="w-full mt-4">Filter</Button>
+	<div class={cn('flex items-center justify-between', 'phone:gap-4')}>
+		<div class="space-y-1">
+			<h1 class={cn('text-2xl font-medium', 'phone:text-xl')}>Best McDonalds in the area</h1>
+			<span class="text-sm text-gray-500">Latitude: {lat}, Longitude: {lng}</span>
 		</div>
-		<Separator orientation="vertical" class="mx-4 mr-0" />
-		<div class=" basis-2/3">
+		<div class={cn('flex-shrink-0 hidden', 'phone:flex')}>
+			<PlacesMobileFilterDropdown bind:popoverOpen={mobilePopoverOpen}>
+				<PlacesFilterMenu
+					on:click={(e) => {
+						onFilter(e);
+						mobilePopoverOpen = false;
+					}}
+					bind:radius
+					bind:openNow
+				/>
+			</PlacesMobileFilterDropdown>
+		</div>
+	</div>
+
+	<section class={cn('flex w-full gap-10', 'phone:mt-4')}>
+		<div class={cn('basis-1/3', 'phone:hidden')}>
+			<PlacesFilterMenu on:click={onFilter} bind:radius bind:openNow />
+		</div>
+		<Separator orientation="vertical" class={cn('mx-4 mr-0', 'phone:hidden')} />
+		<div class={cn('basis-2/3', 'phone:basis-full phone:mt-4')}>
 			{#if places.length}
 				<PlacesList {places} />
 			{:else}
-				<div class="space-y-10 text-center">
+				<div class={cn('space-y-10 text-center', 'phone:w-full')}>
 					<h1 class="text-2xl font-medium">No results found. Try a different radius?</h1>
 					<img src={emptyResults} alt="No results found" class="mx-auto" />
 				</div>
 			{/if}
 		</div>
 	</section>
-
-	<!-- {#if $position}
-		Current position: {$position.lat}, {$position.lng}
-	{/if}
-
-	{#if places.length}
-		<PlacesList bind:places />
-	{/if} -->
 </main>

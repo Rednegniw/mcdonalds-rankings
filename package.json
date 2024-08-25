@@ -46,7 +46,7 @@
 		"bits-ui": "^0.21.13",
 		"clsx": "^2.1.1",
 		"dotenv": "^16.4.5",
-		"lucide-svelte": "^0.435.0",
+		"lucide-svelte": "^0.436.0",
 		"tailwind-merge": "^2.5.2",
 		"tailwind-variants": "^0.2.1",
 		"uuid": "^10.0.0"
