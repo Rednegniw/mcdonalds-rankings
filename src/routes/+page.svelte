@@ -22,7 +22,7 @@
 
 <main
 	class={cn(
-		'flex flex-col items-center h-screen max-w-3xl mx-auto text-center',
+		'flex flex-col items-center max-w-3xl mx-auto text-center',
 		'tablet:px-4 phone:relative'
 	)}
 >
