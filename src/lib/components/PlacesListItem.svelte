@@ -6,7 +6,7 @@
 
 	export let place: Place;
 
-	$: googleMapsUrl = `https://www.google.com/maps/place/?q=place_id:${place.place_id}`;
+	$: googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${place.name}&query_place_id=${place.place_id}`;
 </script>
 
 <a href={googleMapsUrl} target="_blank" rel="noopener noreferrer">

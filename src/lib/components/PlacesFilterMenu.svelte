@@ -19,7 +19,7 @@
 			for="terms"
 			class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
 		>
-			Is this place open now?
+			Only places open now
 		</label>
 	</div>
 	<Button on:click class="w-full mt-4">Filter</Button>

@@ -78,6 +78,9 @@
 		{#if loadingResults && !suggestions.length}
 			<div class="flex items-center justify-center w-full h-full py-3">Loading...</div>
 		{/if}
+		{#if !loadingResults && !suggestions.length}
+			<div class="flex items-center justify-center w-full h-full py-3">No results loaded.</div>
+		{/if}
 		{#each suggestions as suggestion}
 			<PlacesSearchResultItem
 				place={suggestion}

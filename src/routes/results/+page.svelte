@@ -21,13 +21,9 @@
 	const onFilter = async () => {
 		const url = new URL(window.location.href);
 
-		console.log('radius', radius);
-		console.log('openNow', openNow);
-
 		url.searchParams.set('radius', radius);
 		url.searchParams.set('openNow', openNow);
 
-		console.log('going to', url.toString());
 		goto(url.toString(), { replaceState: true });
 	};
 
