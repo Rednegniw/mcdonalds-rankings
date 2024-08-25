@@ -12,7 +12,9 @@
 			lat: pos.coords.latitude,
 			lng: pos.coords.longitude
 		});
-		query.set(pos.coords.latitude.toString() + ',' + pos.coords.longitude.toString());
+
+		query.set(pos.coords.latitude.toFixed(4) + ',' + pos.coords.longitude.toFixed(4));
+
 		onLocationSuccess(pos);
 		loading = false;
 	};
@@ -40,7 +42,7 @@
 			<LocateFixed
 				class={cn(
 					'text-gray-400 cursor-pointer size-6 hover:text-gray-500 animate',
-					loading && 'animate-pulse scale-105 text-red-500'
+					loading && 'animate-pulse scale-105 text-red-500 hover:text-red-500'
 				)}
 			/>
 		</Tooltip.Trigger>

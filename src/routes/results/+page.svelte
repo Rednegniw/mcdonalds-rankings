@@ -80,7 +80,7 @@
 			{#if places.length}
 				<PlacesList {places} />
 			{:else}
-				<div class={cn('space-y-10 text-center', 'phone:w-full')}>
+				<div class={cn('space-y-10 text-center', 'phone:w-full phone:mt-12')}>
 					<h1 class="text-2xl font-medium">No results found. Try a different radius?</h1>
 					<img src={emptyResults} alt="No results found" class="mx-auto" />
 				</div>

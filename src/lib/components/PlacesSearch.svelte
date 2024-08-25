@@ -50,7 +50,8 @@
 		}
 	};
 
-	const onFocus = () => {
+	const onFocus = (e) => {
+		e.target.select();
 		if ($query.length > 2) {
 			open = true;
 		}
@@ -73,8 +74,8 @@
 		<Search slot="leftContent" class={cn('size-6', 'phone:size-5')} />
 		<CurrentLocation {onLocationSuccess} slot="rightContent" />
 	</Input>
-	<Popover.Trigger class="relative w-full -top-9" />
-	<Popover.Content sameWidth class="p-0 overflow-y-auto">
+	<Popover.Trigger class="w-full " />
+	<Popover.Content sameWidth class="p-0 overflow-y-auto" sideOffset={-15}>
 		{#if loadingResults && !suggestions.length}
 			<div class="flex items-center justify-center w-full h-full py-3">Loading...</div>
 		{/if}

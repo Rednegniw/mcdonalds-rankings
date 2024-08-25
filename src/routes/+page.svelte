@@ -19,7 +19,10 @@
 </script>
 
 <main
-	class={cn('flex flex-col items-center h-screen max-w-3xl mx-auto text-center', 'tablet:px-4')}
+	class={cn(
+		'flex flex-col items-center h-screen max-w-3xl mx-auto text-center',
+		'tablet:px-4 phone:relative'
+	)}
 >
 	<div class={cn('flex flex-col items-center w-full gap-10 mt-24', searchFocused && 'tablet:mt-4')}>
 		<div class={cn('flex flex-col items-center gap-10', searchFocused && 'tablet:hidden')}>
@@ -29,12 +32,14 @@
 			</h1>
 		</div>
 
-		<PlacesSearch
-			{onPlaceSelected}
-			{onLocationSuccess}
-			on:resultsOpen={onResultsOpen}
-			on:blur={onBlur}
-		/>
+		<div class={cn('w-full', searchFocused && 'phone:fixed phone:top-0 phone:p-4')}>
+			<PlacesSearch
+				{onPlaceSelected}
+				{onLocationSuccess}
+				on:resultsOpen={onResultsOpen}
+				on:blur={onBlur}
+			/>
+		</div>
 	</div>
 </main>
 
