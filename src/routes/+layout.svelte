@@ -2,7 +2,12 @@
 	import '../app.css';
 </script>
 
-<slot />
+<div>
+	<slot />
+	<span class="flex justify-center w-full px-2 py-4 text-sm text-center text-gray-500"
+		>This site is not affiliated in any way with McDonald's.</span
+	>
+</div>
 
 <svelte:head>
 	{#if process.env.NODE_ENV === 'production'}
