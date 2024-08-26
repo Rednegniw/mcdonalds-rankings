@@ -21,5 +21,6 @@
 
 			gtag('config', 'G-PJMCFE593C');
 		</script>
+		<meta name="google-adsense-account" content="ca-pub-6899551553514815" />
 	{/if}
 </svelte:head>
