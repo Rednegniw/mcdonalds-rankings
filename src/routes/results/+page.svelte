@@ -91,5 +91,5 @@
 </main>
 
 <svelte:head>
-	<title>Best McDonalds near {$query}</title>
+	<title>Best McDonald's near {($query ? $query : { lat }, { lng })}</title>
 </svelte:head>

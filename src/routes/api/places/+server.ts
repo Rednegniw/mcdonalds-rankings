@@ -24,9 +24,10 @@ export const GET: RequestHandler = async ({ url }) => {
 
 	const data: PlacesNearbySearchResponse = await response.json();
 
-	// Only return places that contain the keyword
 	const filteredResults = data.results
+		// Only return places that contain the keyword "McDonald's"
 		.filter((place) => place.name?.includes(keyword))
+		// Sort by user rating
 		.sort((a, b) => {
 			if (a.rating && b.rating) {
 				return b.rating - a.rating;
