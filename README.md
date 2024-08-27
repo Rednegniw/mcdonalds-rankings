@@ -2,7 +2,16 @@
 
 Hi! This is a [SvelteKit](https://kit.svelte.dev/) project that aims to showcase how to use the [Google Places API](https://developers.google.com/places/web-service/overview) to find the best McDonald's near you.
 
+You can:
+
+- Search for a place by name
+- Search in your current location
+- Filter by radius and open now
+- See the user ratings of the places
+
 I made it for fun, mainly to learn Svelte as I never used it before.
+
+## Tech stack
 
 It is made with:
 
@@ -10,6 +19,8 @@ It is made with:
 - [SvelteKit](https://kit.svelte.dev/)
 - [Bits UI](https://bitsui.org/)
 - [Google Places API](https://developers.google.com/places/web-service/overview)
+
+## Roadmap
 
 Currently, I don't have any plan to add to it, but feel free to create a PR if you want to add something.
 
