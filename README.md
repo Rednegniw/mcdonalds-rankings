@@ -24,7 +24,7 @@ It is made with:
 
 Currently, I don't have any plan to add to it, but feel free to create a PR if you want to add something.
 
-Currently, it is deployed on [bestmcdonalds.com](https://bestmcdonalds.com). Hopefully it won't have much traffic, since Google Places API is pretty expensive. If so, I will take it down.
+Currently, it is deployed on <a href="https://bestmcdonalds.com" target="_blank">bestmcdonalds.com</a>. Hopefully it won't have much traffic, since Google Places API is pretty expensive.
 
 ## Getting started
 
