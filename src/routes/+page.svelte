@@ -6,8 +6,6 @@
 
 	let searchFocused = false;
 
-	$: console.log('NODE_ENV', process.env.NODE_ENV);
-
 	const onFocus = () => (searchFocused = true);
 	const onBlur = () => (searchFocused = false);
 
@@ -29,9 +27,11 @@
 	<div class={cn('flex flex-col items-center w-full gap-10 mt-24', searchFocused && 'tablet:mt-4')}>
 		<div class={cn('flex flex-col items-center gap-10', searchFocused && 'tablet:hidden')}>
 			<img src={mcDonaldsIcon} alt="McDonalds" class="size-24" />
-			<h1 class={cn('text-4xl font-bold', 'phone:text-3xl')}>
-				Find the best ranked McDonalds near you.
-			</h1>
+			<div class="space-y-2">
+				<h1 class={cn('text-4xl font-bold', 'phone:text-3xl')}>
+					Find the best ranked McDonalds near you.
+				</h1>
+			</div>
 		</div>
 
 		<div class={cn('w-full', searchFocused && 'phone:fixed phone:top-0 phone:p-4')}>
@@ -48,4 +48,8 @@
 
 <svelte:head>
 	<title>Find the best McDonalds in your area</title>
+	<meta
+		name="description"
+		content="A simple tool to find the best McDonalds in your area, based on user ratings."
+	/>
 </svelte:head>

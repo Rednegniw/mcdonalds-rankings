@@ -1,5 +1,6 @@
 <script>
 	import '../app.css';
+	import AdBanner from '$lib/components/AdBanner.svelte';
 </script>
 
 <div class="min-h-screen -mb-[50px]">
@@ -8,6 +9,7 @@
 <div class="flex justify-center w-full px-2 py-4 text-sm text-center text-gray-500 h-[50px]">
 	This site is not affiliated in any way with McDonald's.
 </div>
+<AdBanner />
 
 <svelte:head>
 	{#if process.env.NODE_ENV === 'production'}

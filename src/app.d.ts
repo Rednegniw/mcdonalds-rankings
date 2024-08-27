@@ -13,6 +13,9 @@ declare global {
 			caches: CacheStorage & { default: Cache };
 		}
 	}
+	interface Window {
+		adsbygoogle: Array<object>;
+	}
 }
 
 export {};

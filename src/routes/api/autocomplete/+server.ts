@@ -6,8 +6,6 @@ export const GET: RequestHandler = async ({ url, fetch }) => {
 	const sessionToken = url.searchParams.get('sessionToken');
 	const apiUrl = `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${query}&key=${apiKey}&sessiontoken=${sessionToken}`;
 
-	console.log('AUTOCOMPLETE sessionToken', sessionToken);
-
 	if (!query?.length) {
 		return json({ error: 'No query provided' }, { status: 400 });
 	}
