@@ -3,8 +3,12 @@
 	import Checkbox from './ui/checkbox/checkbox.svelte';
 	import Input from './ui/input/input.svelte';
 
-	export let radius: number;
-	export let openNow: boolean;
+	interface Props {
+		radius: number;
+		openNow: boolean;
+	}
+
+	let { radius = $bindable(), openNow = $bindable() }: Props = $props();
 </script>
 
 <div class="space-y-8">

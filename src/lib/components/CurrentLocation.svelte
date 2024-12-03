@@ -4,8 +4,12 @@
 	import { position, query } from '../stores';
 	import * as Tooltip from '$lib/components/ui/tooltip';
 
-	let loading = false;
-	export let onLocationSuccess: (pos: GeolocationPosition) => void;
+	let loading = $state(false);
+	interface Props {
+		onLocationSuccess: (pos: GeolocationPosition) => void;
+	}
+
+	let { onLocationSuccess }: Props = $props();
 
 	const onSuccess = (pos: GeolocationPosition) => {
 		position.set({
@@ -36,7 +40,7 @@
 	};
 </script>
 
-<button on:click={onClick} aria-label="Current Location">
+<button onclick={onClick} aria-label="Current Location">
 	<Tooltip.Root openDelay={0}>
 		<Tooltip.Trigger class="flex items-center self-center">
 			<LocateFixed

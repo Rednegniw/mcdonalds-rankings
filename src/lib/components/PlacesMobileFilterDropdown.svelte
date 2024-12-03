@@ -4,7 +4,12 @@
 	import { SlidersHorizontal } from 'lucide-svelte';
 	import Button from './ui/button/button.svelte';
 
-	export let popoverOpen = false;
+	interface Props {
+		popoverOpen?: boolean;
+		children?: import('svelte').Snippet;
+	}
+
+	let { popoverOpen = $bindable(false), children }: Props = $props();
 </script>
 
 <Popover.Root bind:open={popoverOpen}>
@@ -13,6 +18,6 @@
 	</Popover.Trigger>
 
 	<Popover.Content>
-		<slot />
+		{@render children?.()}
 	</Popover.Content>
 </Popover.Root>

@@ -1,9 +1,12 @@
 <script lang="ts">
 	import { v4 as uuid } from 'uuid';
 
-	let className: string | undefined = undefined;
-	export { className as class };
-	export let percentage: number;
+	interface Props {
+		class?: string | undefined;
+		percentage: number;
+	}
+
+	let { class: className = undefined, percentage }: Props = $props();
 
 	let id = uuid();
 

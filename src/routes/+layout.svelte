@@ -1,10 +1,15 @@
-<script>
+<script lang="ts">
 	import '../app.css';
 	import AdBanner from '$lib/components/AdBanner.svelte';
+	interface Props {
+		children?: import('svelte').Snippet;
+	}
+
+	let { children }: Props = $props();
 </script>
 
 <div class="min-h-screen -mb-[50px]">
-	<div class="pb-10"><slot /></div>
+	<div class="pb-10">{@render children?.()}</div>
 </div>
 <div class="flex justify-center w-full px-2 py-4 text-sm text-center text-gray-500 h-[50px]">
 	This site is not affiliated in any way with McDonald's.

@@ -2,16 +2,18 @@
 	import { cn } from '$lib/utils';
 	import Star from './Star.svelte';
 
-	export let rating: number;
-	let starPercentages: Record<number, number>;
+	interface Props {
+		rating: number;
+	}
 
-	$: starPercentages = {
+	let { rating }: Props = $props();
+	let starPercentages: Record<number, number> = $derived({
 		1: rating > 0 && rating <= 1 ? rating * 100 : 100,
 		2: rating > 1 ? (rating <= 2 ? (rating - 1) * 100 : 100) : 0,
 		3: rating > 2 ? (rating <= 3 ? (rating - 2) * 100 : 100) : 0,
 		4: rating > 3 ? (rating <= 4 ? (rating - 3) * 100 : 100) : 0,
 		5: rating > 4 ? (rating <= 5 ? (rating - 4) * 100 : 100) : 0
-	};
+	});
 </script>
 
 <div class="flex items-center gap-2">

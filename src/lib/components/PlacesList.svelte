@@ -2,7 +2,11 @@
 	import type { Place } from '$lib/types';
 	import PlacesListItem from './PlacesListItem.svelte';
 
-	export let places: Place[];
+	interface Props {
+		places: Place[];
+	}
+
+	let { places }: Props = $props();
 </script>
 
 <div class="space-y-2">

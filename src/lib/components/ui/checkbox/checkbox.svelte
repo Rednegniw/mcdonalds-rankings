@@ -6,9 +6,13 @@
 
 	type $$Props = CheckboxPrimitive.Props;
 
-	let className: $$Props['class'] = undefined;
-	export let checked: $$Props['checked'] = false;
-	export { className as class };
+	interface Props {
+		class?: $$Props['class'];
+		checked?: $$Props['checked'];
+		[key: string]: any;
+	}
+
+	let { class: className = undefined, checked = $bindable(false), ...rest }: Props = $props();
 </script>
 
 <CheckboxPrimitive.Root
@@ -17,18 +21,16 @@
 		className
 	)}
 	bind:checked
-	{...$$restProps}
+	{...rest}
 	on:click
 >
-	<CheckboxPrimitive.Indicator
-		class={cn('flex h-4 w-4 items-center justify-center text-current')}
-		let:isChecked
-		let:isIndeterminate
-	>
-		{#if isChecked}
-			<Check class="h-3.5 w-3.5" />
-		{:else if isIndeterminate}
-			<Minus class="h-3.5 w-3.5" />
-		{/if}
+	<CheckboxPrimitive.Indicator class={cn('flex h-4 w-4 items-center justify-center text-current')}>
+		{#snippet children({ isChecked, isIndeterminate })}
+			{#if isChecked}
+				<Check class="h-3.5 w-3.5" />
+			{:else if isIndeterminate}
+				<Minus class="h-3.5 w-3.5" />
+			{/if}
+		{/snippet}
 	</CheckboxPrimitive.Indicator>
 </CheckboxPrimitive.Root>

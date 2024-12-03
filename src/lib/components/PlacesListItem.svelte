@@ -1,3 +1,4 @@
+<!-- @migration-task Error while migrating Svelte code: `<a>` is invalid inside `<a>` -->
 <script lang="ts">
 	import mcDonaldsIcon from '$lib/assets/mcdonalds_icon.svg';
 	import type { Place } from '$lib/types';
@@ -38,12 +39,6 @@
 					<span class="text-sm text-gray-400">({place.user_ratings_total})</span>
 				</div>
 			{/if}
-			<a
-				href={googleMapsUrl}
-				target="_blank"
-				class={cn('text-sm text-blue-800 hover:underline')}
-				rel="noopener noreferrer">See on Google Maps</a
-			>
 		</div>
 	</div>
 </a>

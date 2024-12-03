@@ -4,7 +4,7 @@
 	import { cn } from '$lib/utils';
 	import { goto } from '$app/navigation';
 
-	let searchFocused = false;
+	let searchFocused = $state(false);
 
 	const onFocus = () => (searchFocused = true);
 	const onBlur = () => (searchFocused = false);

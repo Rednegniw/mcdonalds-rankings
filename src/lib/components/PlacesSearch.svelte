@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { run } from 'svelte/legacy';
+
 	import * as Popover from '$lib/components/ui/popover';
 	import { Search } from 'lucide-svelte';
 	import CurrentLocation from '$lib/components/CurrentLocation.svelte';
@@ -10,12 +12,16 @@
 	import { query } from '$lib/stores';
 	import { v4 as uuidv4 } from 'uuid';
 
-	let open = false;
-	let loadingResults = false;
-	let suggestions: PlacesAutocompletePrediction[] = [];
+	let open = $state(false);
+	let loadingResults = $state(false);
+	let suggestions: PlacesAutocompletePrediction[] = $state([]);
 	let sessionToken: string = uuidv4();
-	export let onLocationSuccess: (pos: GeolocationPosition) => void;
-	export let onPlaceSelected: (placeId: string, name: string, sessionToken?: string) => void;
+	interface Props {
+		onLocationSuccess: (pos: GeolocationPosition) => void;
+		onPlaceSelected: (placeId: string, name: string, sessionToken?: string) => void;
+	}
+
+	let { onLocationSuccess, onPlaceSelected }: Props = $props();
 	const dispatch = createEventDispatcher();
 
 	const autocomplete = async (query: string) => {
@@ -32,13 +38,13 @@
 		loadingResults = false;
 	};
 
-	$: {
+	run(() => {
 		if ($query.length) {
 			dispatch('resultsOpen');
 		} else {
 			dispatch('blur');
 		}
-	}
+	});
 
 	const onInput = () => {
 		if ($query.length > 2) {
@@ -72,8 +78,12 @@
 		class={cn('text-xl select-none', 'phone:text-base')}
 		autocomplete="off"
 	>
-		<Search slot="leftContent" class={cn('size-6', 'phone:size-5')} />
-		<CurrentLocation {onLocationSuccess} slot="rightContent" />
+		{#snippet leftContent()}
+			<Search class={cn('size-6', 'phone:size-5')} />
+		{/snippet}
+		{#snippet rightContent()}
+			<CurrentLocation {onLocationSuccess} />
+		{/snippet}
 	</Input>
 	<Popover.Trigger class="w-full " />
 	<Popover.Content sameWidth class="p-0 overflow-y-auto" sideOffset={-15}>

@@ -15,5 +15,5 @@
 		style="display:inline-block;width:320px;height:50px"
 		data-ad-client="ca-pub-6899551553514815"
 		data-ad-slot="4129157827"
-	/>
+	></ins>
 </div>

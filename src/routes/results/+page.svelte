@@ -9,15 +9,13 @@
 	import PlacesMobileFilterDropdown from '$lib/components/PlacesMobileFilterDropdown.svelte';
 	import { query } from '$lib/stores/index.js';
 
-	export let data;
-	export let radius = data.radius;
-	export let openNow = data.openNow;
+	let { data, radius = $bindable(data.radius), openNow = $bindable(data.openNow) } = $props();
 
-	$: places = data.places;
-	$: lat = (+data.lat).toFixed(4);
-	$: lng = (+data.lng).toFixed(4);
+	let places = $derived(data.places);
+	let lat = $derived((+data.lat).toFixed(4));
+	let lng = $derived((+data.lng).toFixed(4));
 
-	let mobilePopoverOpen = false;
+	let mobilePopoverOpen = $state(false);
 
 	const onFilter = async () => {
 		const url = new URL(window.location.href);
