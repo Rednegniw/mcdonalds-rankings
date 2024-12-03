@@ -9,30 +9,42 @@
 	import PlacesMobileFilterDropdown from '$lib/components/PlacesMobileFilterDropdown.svelte';
 	import { query } from '$lib/stores/index.js';
 
-	let { data, radius = $bindable(data.radius), openNow = $bindable(data.openNow) } = $props();
+	interface PageData {
+		places: any[];
+		lat: string | null;
+		lng: string | null;
+		radius: string;
+		openNow: boolean;
+	}
+
+	let {
+		data,
+		radius = $bindable(data?.radius ?? '5000'),
+		openNow = $bindable(data?.openNow ?? false)
+	} = $props<{ data: PageData }>();
 
 	let places = $derived(data.places);
-	let lat = $derived((+data.lat).toFixed(4));
-	let lng = $derived((+data.lng).toFixed(4));
+	let lat = $derived(data.lat ? (+data.lat).toFixed(4) : '0');
+	let lng = $derived(data.lng ? (+data.lng).toFixed(4) : '0');
 
 	let mobilePopoverOpen = $state(false);
 
 	const onFilter = async () => {
 		const url = new URL(window.location.href);
-
 		url.searchParams.set('radius', radius);
 		url.searchParams.set('openNow', openNow);
-
 		goto(url.toString(), { replaceState: true });
 	};
 
-	const onPlaceSelected = async (placeId: string, _, sessionToken: string) => {
+	const onPlaceSelected = async (placeId: string, name: string, sessionToken?: string) => {
 		const url = new URL(window.location.href);
 
 		url.searchParams.delete('lat');
 		url.searchParams.delete('lng');
 		url.searchParams.set('place_id', placeId);
-		url.searchParams.set('sessionToken', sessionToken);
+		if (sessionToken) {
+			url.searchParams.set('sessionToken', sessionToken);
+		}
 
 		goto(url.toString(), { replaceState: true });
 	};
@@ -59,8 +71,8 @@
 		<div class={cn('flex-shrink-0 hidden', 'phone:flex')}>
 			<PlacesMobileFilterDropdown bind:popoverOpen={mobilePopoverOpen}>
 				<PlacesFilterMenu
-					on:click={(e) => {
-						onFilter(e);
+					on:click={() => {
+						onFilter();
 						mobilePopoverOpen = false;
 					}}
 					bind:radius
@@ -89,5 +101,9 @@
 </main>
 
 <svelte:head>
-	<title>Best McDonald's near {($query ? $query : { lat }, { lng })}</title>
+	<title
+		>Best McDonald's near {typeof $query === 'string' && $query.length > 0
+			? $query
+			: `${lat}, ${lng}`}</title
+	>
 </svelte:head>
